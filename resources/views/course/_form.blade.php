@@ -76,14 +76,10 @@
     {{-- <x-form.radio name="status" :checked="$courses->status" value="active"  />
     <x-form.radio name="status" :checked="$courses->status" value="archived"  /> --}}
 
-        <div class="custom-control custom-radio">
-            {{--  --}}
-           <input type="radio" id="customRadio1" name="status" class="custom-control-input"value='active'@checked(old('status',$courses->status) == 'active')>
-            <label class="custom-control-label" for="customRadio1">active</label>
-          </div>
+
           <div class="custom-control custom-radio">
             {{--  --}}
-            <input type="radio" id="customRadio2" name="status" class="custom-control-input"value='archived'@checked(old('status',$courses->status) == 'archived')>
+            <input type="radio" id="customRadio2" name="status"  class="custom-control-input"value='archived' checked @checked(old('status',$courses->status) == 'archived' )>
             <label class="custom-control-label" for="customRadio2">archived</label>
           </div>
     {{-- </>div --}}

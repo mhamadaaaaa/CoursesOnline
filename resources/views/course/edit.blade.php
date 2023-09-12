@@ -11,10 +11,10 @@
           </nav>
         </div><!-- End Page Title -->
           <!-- End Page Title -->
-          <form action="{{route('course.update',$categuri->id)}}" method="post" enctype="multipart/form-data">
+          <form action="{{route('course.update',$courses->id)}}" method="post" enctype="multipart/form-data">
             @csrf
             @method('put')
-            @include('category._form')
+            @include('course._form')
             <div class="form-group"style="margin-left: 30px">
                 <button type="submit" class="btn btn-primary">update</button>
             </div>

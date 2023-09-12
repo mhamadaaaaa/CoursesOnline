@@ -80,8 +80,16 @@
 
                             <td>{{ $item->course_id }}</td>
                             {{-- <td><a href="{{$item->video}}">video</a></td> --}}
-                            <td><i class="fa fa-youtube" aria-hidden="true"><iframe src="{{$item->video}}" frameborder="1"></iframe></i></td>
+                            <td>
+                                @php
+                                    $video_url = $item->video;
+                                    $converted_url = str_replace("watch?v=", "embed/", $video_url);
+                                @endphp
+                                <iframe src="{{ $converted_url }}" frameborder="0"></iframe>
+                            </td>
+
                             {{-- <td><iframe src="{{$item->video}}" frameborder="1"></iframe></td> --}}
+
 
                             <td>{{ $item->created_at }}</td>
 
@@ -90,7 +98,7 @@
                                 <a href="{{ route('video.edit', [$item->id]) }}"
                                     class="btn btn-sm btn-outline-success">update</a>
                                 {{-- @endif --}}
-
+                                    
                             </td>
                             <td>
                                 {{-- @can('categories.delete') --}}

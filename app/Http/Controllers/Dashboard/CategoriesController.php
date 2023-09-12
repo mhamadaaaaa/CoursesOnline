@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\category;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,6 +17,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('category.view')){
+            abort(403);
+        }
         $request = request();
         $categories = category::all();
         return view('category.index',compact('categories'));
@@ -26,6 +30,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
+        Gate::authorize('category.create');
         // $parant= category::all();
         $categories = new category();
         return view('category.create',compact('categories'));
@@ -36,6 +41,7 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('category.create');
         $request->merge([
             'slug' => Str::slug($request->post('name')),
         ]);
@@ -66,6 +72,7 @@ class CategoriesController extends Controller
      */
     public function edit(string $id)
     {
+        Gate::authorize('category.update');
         try {
             $categories = category::findOrfail($id);
         } catch (Exception $e) {
@@ -83,6 +90,7 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        Gate::authorize('category.update');
         $categories = category::find($id);
         $old_image = $categories->image;
         $data = $request->except('image');
@@ -108,6 +116,7 @@ class CategoriesController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('category.delete');
         $categories = category::find($id);
         $categories->delete();
         return redirect("category")->with('success', 'category deleated');

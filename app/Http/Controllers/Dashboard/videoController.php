@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Dashboard;
- 
+use Google_Service_YouTube;
 use App\Http\Controllers\Controller;
 use App\Models\courses;
 use App\Models\video;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 class videoController extends Controller
@@ -16,6 +17,9 @@ class videoController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('video.view')){
+            abort(403);
+        }
         $request = request();
         $video = video::all();
         return view('video.index',compact('video'));
@@ -26,6 +30,7 @@ class videoController extends Controller
      */
     public function create()
     {
+        Gate::authorize('video.create');
         $course= courses::all();
         $video = video::all();
         $video = new video();
@@ -37,6 +42,7 @@ class videoController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('video.create');
         // $request->merge([
         //     'slug' => Str::slug($request->post('name')),
         // ]);
@@ -67,6 +73,7 @@ class videoController extends Controller
      */
     public function edit(string $id)
     {
+        Gate::authorize('video.update');
         try {
             $course= courses::all();
             $video = video::findOrfail($id);
@@ -85,6 +92,7 @@ class videoController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        Gate::authorize('video.update');
         $video = video::find($id);
         // $old_image = $video->image;
         // $data = $request->except('image');
@@ -111,6 +119,7 @@ class videoController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('video.delete');
         $video = video::find($id);
         $video->delete();
         return redirect("video")->with('success', 'video deleated');

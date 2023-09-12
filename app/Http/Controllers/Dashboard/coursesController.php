@@ -8,6 +8,7 @@ use App\Models\courses;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,6 +19,9 @@ class coursesController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('course.view')){
+            abort(403);
+        }
         $request = request();
         $courses = courses::all();
         return view('course.index',compact('courses'));
@@ -28,6 +32,7 @@ class coursesController extends Controller
      */
     public function create()
     {
+        Gate::authorize('course.create');
         //$parant= courses::all();
         $user= User::all();
         $category = category::all();
@@ -40,6 +45,7 @@ class coursesController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('course.create');
         $request->merge([
             'slug' => Str::slug($request->post('name')),
         ]);
@@ -52,6 +58,7 @@ class coursesController extends Controller
             // dd($path);
             $data['image'] = $path;
         }
+
         $courses = courses::create($data);
         return redirect("course")->with('success', 'courses created');
 
@@ -70,8 +77,11 @@ class coursesController extends Controller
      */
     public function edit(string $id)
     {
+        Gate::authorize('course.update');
         try {
             $courses = courses::findOrfail($id);
+            $category = category::all();
+            $user= User::all();
         } catch (Exception $e) {
             return redirect("courses")->with('info', 'objext not found');
         }
@@ -79,7 +89,7 @@ class coursesController extends Controller
         //get بترجع collection ,,,firest ما بترجع collection بترجع ال object نفسه تبع model
 
         //    ->dd();
-        return view('course.edit', compact('courses'));
+        return view('course.edit', compact('courses','category','user'));
     }
 
     /**
@@ -87,6 +97,7 @@ class coursesController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        Gate::authorize('course.update');
         $courses = courses::find($id);
         $old_image = $courses->image;
         $data = $request->except('image');
@@ -103,7 +114,7 @@ class coursesController extends Controller
             Storage::disk('public')->delete($old_image);
         }
         // $courses = courses::update($request->all);
-        return redirect("courses")->with('success', 'courses updated');
+        return redirect("course")->with('success', 'courses updated');
 
     }
 
@@ -112,6 +123,7 @@ class coursesController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('course.delete');
         $courses = courses::find($id);
         $courses->delete();
         return redirect("course")->with('success', 'courses deleated');

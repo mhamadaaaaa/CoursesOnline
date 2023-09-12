@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\CategoriesController;
+use App\Http\Controllers\Dashboard\CourseActive;
 use App\Http\Controllers\Dashboard\coursesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -42,5 +43,7 @@ Route::delete('course/{course}/force-deleate', [coursesController::class, 'force
 Route::resource('course', coursesController::class);
 //////////////////////////////////////////////////
 Route::resource('video', videoController::class);
+//////////////////////////////////////////////////
+Route::resource('activecourse',CourseActive ::class);
 
 ?>

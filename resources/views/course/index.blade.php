@@ -58,7 +58,6 @@
                 <th>statuse</th>
                 <th>categories_id</th>
                 <th>teacher_id</th>
-                <th>Vidow</th>
                 <th>created-at</th>
                 <th>edit</th>
                 <th>deleate</th>
@@ -83,18 +82,12 @@
                 <td>{{$item->status}}</td>
                 <td>{{$item->categories_id}}</td>
                 <td>{{$item->teacher_id}}</td>
-                <td>
-                    {{-- @if(Auth::user()->can('categories.update')) --}}
-                    {{-- {{route('course.vidio')}} --}}
-                    <a href="" class="btn btn-sm btn-outline-success">create</a>
-                    {{-- @endif --}}
 
-                </td>
                 <td>{{$item->created_at}}</td>
 
                 <td>
                     {{-- @if(Auth::user()->can('categories.update')) --}}
-                    <a href="{{route('course.edit',[$item->id])}}" class="btn btn-sm btn-outline-success">create</a>
+                    <a href="{{route('course.edit',[$item->id])}}" class="btn btn-sm btn-outline-success">update</a>
                     {{-- @endif --}}
 
                 </td>
