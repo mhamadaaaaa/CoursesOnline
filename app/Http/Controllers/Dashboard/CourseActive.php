@@ -54,7 +54,7 @@ class CourseActive extends Controller
         $courses->update($data);
         if ($old_image && isset($data['image'])) {
             Storage::disk('public')->delete($old_image);
-        }
+        }     
 
 
     }
